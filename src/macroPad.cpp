@@ -8,21 +8,23 @@
 //Key pinouts
 const byte R1 = 5;
 const byte R2 = 6;
-const byte R3 = 15;    
+const byte R3 = A3; 
+const byte R4 = A2;   
 const byte C1 = 7;
 const byte C2 = 8;
 const byte C3 = 9;
 
-const byte ROWS = 3;
+const byte ROWS = 4;
 const byte COLS = 3;
 
 char keys[ROWS][COLS] = {
-  {'1', '2', '3'},
+  {'O', 'Z', 'X'},
+  {'7', '8', '9'},
   {'4', '5', '6'},
-  {'7', '8', '9'}
-};
+  {'1', '2', '3'},
+}; 
 
-byte rowPins[ROWS] = {R1, R2, R3};
+byte rowPins[ROWS] = {R1, R2, R3, R4};
 byte colPins[COLS] = {C1, C2, C3};
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 
@@ -30,7 +32,7 @@ Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 #define CLK 3
 #define DT 2
 #define SW A1
-Encoder volumeKnob(DT,CLK); 
+Encoder volumeKnob(CLK, DT); 
 Bounce volumeButton = Bounce(SW, 10); 
 int oldPosition = -999;
 unsigned long lastButtonPress = 0; 
