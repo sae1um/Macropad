@@ -18,7 +18,7 @@ This project started as a way to push myself out of my comfort zone and dive int
 
 ## 🧰 Components Used
 
-- 2 Arduino Pro Micro (ATmega32U4) Killed 1 :/
+- 2 Arduino Pro Micro (ATmega32U4) Killed 1 already
 - 11 Outemu Brown tactile switches (Pack of 30)
 - Rotary encoder (KY-040)
 - 3 LEDs (Red, Yellow, Green)
@@ -40,14 +40,16 @@ You can find the `Macropad_Gerber_V1.zip` file in this repository to use with yo
 - [x] Switch matrix tested and working
 - [x] Rotary encoder reads direction correctly
 - [x] Killing atleast 1 component in the process
-- [ ] Components connected with PCB
-- [ ] Mode LEDs light up based on current state
-- [ ] Final case/enclosure (WIP)
+- [x] Components connected with PCB
+- [x] Layering System implemented
+- [-] Assigning Macros
+- [ ] Layer LEDs light up based on current layout
+- [-] Final case/enclosure (WIP)
 
 ## 🛠️ Future Ideas
 
 - Add QMK/VIA support for easy reprogramming
-- Build a 3D printed case or laser-cut enclosure
+- Build a 3D printed case
 - Experiment with OLED displays or sound feedback
 
 ## 📷 Gallery

@@ -24,26 +24,45 @@ char keys[NUM_OF_LAYERS][ROWS][COLS] = {
     {'7', '8', '9'},
     {'4', '5', '6'},
     {'1', '2', '3'}
-  },
-  {
-    {'0', 'Z', 'X'},
-    {'7', '8', '9'},
-    {'4', '5', '6'},
-    {'1', '2', '3'}
-  },
-  {
-    {'0', 'E', 'F'},
-    {'7', '8', '9'},
-    {'4', '5', '6'},
-    {'1', '2', '3'}
   }
 }; 
+
+//Current Macros
+/*
+  LAYER 1
+  Z = LAYER CHANGE
+  X = TBD
+  0 = LAYER CHANGE
+  1 = COLOUR PICKER
+  2 = TBD
+  3 = SPOTIFY
+  4 = TBD
+  5 = TBD
+  6 = TBD
+  7 = PIN WINDOW
+  8 = SCREENSHOT
+  9 = TBD
+*/
+/*
+  LAYER 2
+  Z = LAYER CHANGE
+  X = TBD
+  1 = TBD
+  2 = TBD
+  3 = TBD
+  4 = TBD
+  5 = TBD
+  6 = TBD
+  7 = TBD
+  8 = TBD
+  9 = TBD
+*/
 
 int currentLayer = 0;
 
 byte rowPins[ROWS] = {R1, R2, R3, R4};
 byte colPins[COLS] = {C1, C2, C3};
-Keypad keypad = Keypad(makeKeymap(keys[currentLayer]), rowPins, colPins, ROWS, COLS);
+Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 
 //Encoder
 #define CLK 3
@@ -62,16 +81,15 @@ unsigned long lastButtonPress = 0;
 // Initialising functions
   void detectButtonPress();
   void detectEncoderTurn();
-  void startupLights();
+  // void startupLights();
   void changeLayer();
-  void detectKeypadPress();
+  void detectKeypadPress(char keyPressed);
+  void Layout1(char keyPressed);
+  void Layout2(char keyPressed);
 
 void setup(){
   Serial.begin(9600);
   Serial1.begin(9600);
-
-  // pinMode(rowPin, OUTPUT);
-  // pinMode(colPin, INPUT_PULLUP);
 
   pinMode(CLK, INPUT);
   pinMode(DT, INPUT);
@@ -80,7 +98,7 @@ void setup(){
   Keyboard.begin();
   Consumer.begin();
 
-  startupLights();
+  // startupLights();
 }
 
 void loop(){
@@ -99,8 +117,97 @@ void loop(){
 }
 
 void detectKeypadPress(char keyPressed){
+  if(currentLayer == 1){
+    Keyboard.write(keyPressed);
+    return;
+  }
+  switch (currentLayer){
+    case 0:
+      Layout1(keyPressed);
+      break;
+    case 2:
+      Layout2(keyPressed);
+      break;
+    default:
+      //PING LED
+      break;
+  }
+}
 
+void Layout1(char keyPressed){
+  //GENERAL PURPOSE LAYOUT
 
+  // KEY_LEFT_GUI is WINDOWS KEY
+  switch (keyPressed){
+    case 'Z':
+      //Undecided
+      break;
+    case '1': //COLOUR PICKER
+      Keyboard.press(KEY_LEFT_GUI);
+      Keyboard.press(KEY_LEFT_SHIFT);
+      Keyboard.press(KEY_C);
+      Keyboard.releaseAll();
+      break;
+      break;
+    case '2':
+      break;
+    case '3': //SPOTIFY
+      Keyboard.press(KEY_LEFT_CTRL);
+      Keyboard.press(KEY_LEFT_ALT);
+      Keyboard.press(KEY_S);
+      Keyboard.releaseAll();
+      break;
+    case '4':
+      break;
+    case '5':
+      break;
+    case '6':
+      break;
+    case '7': //PIN CURRECT WINDOW (POWERTOYS)
+      Keyboard.press(KEY_LEFT_GUI);
+      Keyboard.press(KEY_LEFT_CTRL);
+      Keyboard.press(KEY_T);
+      Keyboard.releaseAll();
+      break;
+    case '8': //SCREENSHOT
+      Keyboard.press(KEY_LEFT_GUI);
+      Keyboard.press(KEY_LEFT_SHIFT);
+      Keyboard.press(KEY_S);
+      Keyboard.releaseAll();
+      break;
+    case '9':
+      break;
+    default:
+      break;
+  }
+}
+
+void Layout2(char keyPressed){
+  switch (keyPressed){
+    case 'Z':
+      // Keyboard.write(MEDIA_VOL_MUTE);
+      break;
+    case '1':
+      break;
+    case '2':
+      break;
+    case '3':
+      break;
+    case '4':
+      break;
+    case '5':
+      break;
+    case '6':
+      break;
+    case '7':
+      break;
+    case '8':
+      break;
+    case '9':
+      break;
+    default:
+      break;
+  }
 }
 
 void detectButtonPress(){
@@ -146,7 +253,7 @@ void changeLayer(){
   //Returns remainder as the new layer to loop e.g. (0+1) % 3 = 1
   currentLayer = (currentLayer + 1) % NUM_OF_LAYERS;
   // Set the new layer
-  keypad.begin(makeKeymap(keys[currentLayer]));
+  keypad.begin(makeKeymap(keys));
   Serial.print("Layer Changing to Layer ");
   Serial.println(currentLayer + 1);
 }
