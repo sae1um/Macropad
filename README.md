@@ -42,9 +42,9 @@ You can find the `Macropad_Gerber_V1.zip` file in this repository to use with yo
 - [x] Killing atleast 1 component in the process
 - [x] Components connected with PCB
 - [x] Layering System implemented
-- [-] Assigning Macros
+- [ ] Assigning Macros
 - [ ] Layer LEDs light up based on current layout
-- [-] Final case/enclosure (WIP)
+- [ ] Final case/enclosure (WIP)
 
 ## 🛠️ Future Ideas
 

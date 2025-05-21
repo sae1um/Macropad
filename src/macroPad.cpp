@@ -158,10 +158,13 @@ void Layout1(char keyPressed){
       Keyboard.releaseAll();
       break;
     case '4':
-      break;
+      Consumer.write(MEDIA_PREV);
+    break;
     case '5':
+    Consumer.write(MEDIA_PLAY_PAUSE);
       break;
     case '6':
+      Consumer.write(MEDIA_NEXT);
       break;
     case '7': //PIN CURRECT WINDOW (POWERTOYS)
       Keyboard.press(KEY_LEFT_GUI);
