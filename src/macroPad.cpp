@@ -16,17 +16,34 @@ const byte C3 = 9;
 
 const byte ROWS = 4;
 const byte COLS = 3;
+#define NUM_OF_LAYERS 3
 
-char keys[ROWS][COLS] = {
-  {'O', 'Z', 'X'},
-  {'7', '8', '9'},
-  {'4', '5', '6'},
-  {'1', '2', '3'},
+char keys[NUM_OF_LAYERS][ROWS][COLS] = {
+  {
+    {'0', 'Z', 'X'},
+    {'7', '8', '9'},
+    {'4', '5', '6'},
+    {'1', '2', '3'}
+  },
+  {
+    {'0', 'Z', 'X'},
+    {'7', '8', '9'},
+    {'4', '5', '6'},
+    {'1', '2', '3'}
+  },
+  {
+    {'0', 'E', 'F'},
+    {'7', '8', '9'},
+    {'4', '5', '6'},
+    {'1', '2', '3'}
+  }
 }; 
+
+int currentLayer = 0;
 
 byte rowPins[ROWS] = {R1, R2, R3, R4};
 byte colPins[COLS] = {C1, C2, C3};
-Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
+Keypad keypad = Keypad(makeKeymap(keys[currentLayer]), rowPins, colPins, ROWS, COLS);
 
 //Encoder
 #define CLK 3
@@ -43,10 +60,11 @@ unsigned long lastButtonPress = 0;
 #define LED3 14
 
 // Initialising functions
-void detectButtonPress();
-void detectEncoderTurn();
-void startupLights();
-// void detectKeypadPress();
+  void detectButtonPress();
+  void detectEncoderTurn();
+  void startupLights();
+  void changeLayer();
+  void detectKeypadPress();
 
 void setup(){
   Serial.begin(9600);
@@ -66,14 +84,23 @@ void setup(){
 }
 
 void loop(){
-  char customKey = keypad.getKey();
-  if (customKey) {
-    Serial.println(customKey);
+  char keyPressed = keypad.getKey();
+  if (keyPressed) {
+    Serial.println(keyPressed);
+    if(keyPressed == 'Z' || keyPressed == 'B' || keyPressed == 'E'){
+      changeLayer();
+    }else{
+      detectKeypadPress(keyPressed);
+    }
     Serial.println("Pressed");
   }
   detectButtonPress();
   detectEncoderTurn();
-  // detectKeypadPress();
+}
+
+void detectKeypadPress(char keyPressed){
+
+
 }
 
 void detectButtonPress(){
@@ -113,28 +140,13 @@ void detectEncoderTurn(){
   }
 }
 
-
-void startupLights(){
-  //Alternate between the three LEDs
-  digitalWrite(LED1, HIGH);
-  delay(500);
-  digitalWrite(LED1, LOW);
-  delay(500);
-  digitalWrite(LED2, HIGH);
-  delay(500);
-  digitalWrite(LED2, LOW);
-  delay(500);
-  digitalWrite(LED3, HIGH);
-  delay(500);
-  digitalWrite(LED3, LOW);
-  
-  delay(500);
-
-  digitalWrite(LED1, HIGH);
-  digitalWrite(LED2, HIGH);
-  digitalWrite(LED3, HIGH);
-  delay(500);
-  digitalWrite(LED1, LOW);
-  digitalWrite(LED2, LOW);
-  digitalWrite(LED3, LOW);
+void changeLayer(){
+  // Changes the current layer on keypress
+  // LAYER1 -> LAYER2 -> LAYER3 -> LAYER1
+  //Returns remainder as the new layer to loop e.g. (0+1) % 3 = 1
+  currentLayer = (currentLayer + 1) % NUM_OF_LAYERS;
+  // Set the new layer
+  keypad.begin(makeKeymap(keys[currentLayer]));
+  Serial.print("Layer Changing to Layer ");
+  Serial.println(currentLayer + 1);
 }
