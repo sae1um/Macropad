@@ -149,7 +149,11 @@ void Layout1(char keyPressed){
       Keyboard.releaseAll();
       break;
       break;
-    case '2':
+    case '2': //VSCODE FORMAT
+      Keyboard.press(KEY_LEFT_SHIFT);
+      Keyboard.press(KEY_LEFT_ALT);
+      Keyboard.press(KEY_F);
+      Keyboard.releaseAll();
       break;
     case '3': //SPOTIFY
       Keyboard.press(KEY_LEFT_CTRL);
